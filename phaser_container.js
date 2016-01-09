@@ -9,44 +9,41 @@ Phaser.Container.prototype.constructor = Phaser.Container;
 
 /** @override */
 Phaser.Container.prototype.add = function(child, childName) { //childname is optional
-    var child = Phaser.Group.prototype.add.call(this, child);
+    var _child = Phaser.Group.prototype.add.call(this, child);
 
     if (childName && typeof childName === 'string') {
-        this.namedChildren[childName] = child;
+        this.namedChildren[childName] = _child;
     }
 
-    return child;
-}
+    return _child;
+};
 
 /** @override */
 Phaser.Container.prototype.removeAll = function(destroy, silent) {
     this.namedChildren = {};
     Phaser.Group.prototype.removeAll.call(this, destroy, silent);
-}
+};
 
 /** @override */
 Phaser.Container.prototype.remove = function(childOrChildName, destroy, silent) {
-    var child = childOrChildName;
+    var _child = childOrChildName;
 
-    if (typeof child === 'string') {
-        if (this.namedChildren[child]) {
-            var child = this.namedChildren[child];
-            Phaser.Group.prototype.remove.call(this, child, destroy, silent);
-            delete this.namedChildren[child];
+    if (typeof _child === 'string') {
+        if (this.namedChildren.hasOwnProperty(_child)) {
+            _child = this.namedChildren[_child];
+            delete this.namedChildren[_child];
         }
-    } else {
-        return Phaser.Group.prototype.remove.call(this, child, destroy, silent);
-
     }
-
-}
+    
+    return Phaser.Group.prototype.remove.call(this, _child, destroy, silent);
+};
 
 /** @override */
 Phaser.Container.prototype.getChild = function(childName) {
-    if (this.namedChildren[childName]) {
+    if (this.namedChildren.hasOwnProperty(childName)) {
         return this.namedChildren[childName];
     } else {
         return null;
     }
-}
+};
 
